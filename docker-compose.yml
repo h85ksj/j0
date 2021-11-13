@@ -1,0 +1,29 @@
+---
+version: '3'
+services:
+  download-data:
+    image: freqtradeorg/freqtrade:develop
+    container_name: download-data
+    volumes:
+      - ".:/freqtrade/user_data/data"
+    command: >
+      download-data
+      --timerange ${START_DATE:-20201201}-${END_DATE:-20211114}
+      --timeframe 5m 15m
+      --datadir user_data/data/ftx
+      --pairs .*/USD
+      --config user_data/data/pairlists.json
+
+  download-data2:
+    image: freqtradeorg/freqtrade:develop
+    container_name: download-data2
+    volumes:
+      - ".:/freqtrade/user_data/data"
+    command: >
+      download-data
+      --timerange ${START_DATE:-20201201}-${END_DATE:-20211114}
+      --timeframe 1h 1d
+      --datadir user_data/data/ftx2
+      --pairs .*/USD
+      --config user_data/data/pairlists.json
+      

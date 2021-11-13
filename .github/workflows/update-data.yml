@@ -1,0 +1,76 @@
+name: Update Data
+
+on: [push,workflow_dispatch]
+
+concurrency: 1
+
+jobs:
+
+  Download-Exchange-Data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Prep Git
+        run: |
+          git config --local user.email "67898767+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git reset --hard HEAD
+          git status
+
+      - name: ftx Backtesting Variables
+        id: ftx-dates
+        uses: falti/dotenv-action@v0.2.6
+        with:
+          log-variables: true
+          path:
+            backtesting-ftx.env
+
+      - name: Download ftx Data (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
+        id: ftx-data-download
+        env:
+          START_DATE: ${{ steps.ftx-dates.outputs.start_date }}
+          END_DATE: ${{ steps.ftx-dates.outputs.end_date }}
+          EXCHANGE: ftx
+        run: |
+          docker-compose run --rm download-data
+
+      - name: Download ftx Data2 (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
+        id: ftx-data-download2
+        env:
+          START_DATE: ${{ steps.ftx-dates.outputs.start_date }}
+          END_DATE: ${{ steps.ftx-dates.outputs.end_date }}
+          EXCHANGE: ftx
+        run: |
+          docker-compose run --rm download-data2
+
+      - name: Fix File Ownership
+        run: |
+          sudo chown -R $(id -u):$(id -g) .
+
+      - name: Commit ftx Changed Files
+        id: commit-ftx-changes
+        if: steps.ftx-data-download.outcome == 'success'
+        continue-on-error: true
+        run: |
+          git add ftx/*.json.gz
+          git add ftx2/*.json.gz
+          git commit -a -m "Update ftx exchange data from ${{ steps.ftx-dates.outputs.start_date }} to ${{ steps.ftx-dates.outputs.end_date }}"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        if: steps.commit-ftx-changes.outcome == 'success'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

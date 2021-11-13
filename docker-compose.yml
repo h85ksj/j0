@@ -40,9 +40,9 @@ services:
       --pairs .*/USD
       --config user_data/data/pairlists.json
 
-  download-data2:
+  download-data20:
     image: freqtradeorg/freqtrade:develop
-    container_name: download-data2
+    container_name: download-data20
     volumes:
       - ".:/freqtrade/user_data/data"
     command: >

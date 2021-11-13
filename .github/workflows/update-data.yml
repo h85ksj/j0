@@ -44,7 +44,7 @@ jobs:
           END_DATE: ${{ steps.ftx-dates.outputs.end_date }}
           EXCHANGE: ftx
         run: |
-          docker-compose run --rm download-data
+          docker-compose run --rm download-data1
 
       - name: Download ftx Data5 (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
         id: ftx-data-download5
@@ -53,7 +53,7 @@ jobs:
           END_DATE: ${{ steps.ftx-dates.outputs.end_date }}
           EXCHANGE: ftx
         run: |
-          docker-compose run --rm download-data
+          docker-compose run --rm download-data5
 
       - name: Download ftx Data15 (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
         id: ftx-data-download15
@@ -62,7 +62,7 @@ jobs:
           END_DATE: ${{ steps.ftx-dates.outputs.end_date }}
           EXCHANGE: ftx
         run: |
-          docker-compose run --rm download-data
+          docker-compose run --rm download-data15
 
       - name: Download ftx Data20 (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
         id: ftx-data-download20
@@ -71,7 +71,7 @@ jobs:
           END_DATE: ${{ steps.ftx-dates.outputs.end_date }}
           EXCHANGE: ftx
         run: |
-          docker-compose run --rm download-data2
+          docker-compose run --rm download-data20
 
       - name: Fix File Ownership
         run: |

@@ -82,8 +82,10 @@ jobs:
         if: steps.ftx-data-download1.outcome == 'success' || steps.ftx-data-download5.outcome == 'success' || steps.ftx-data-download15.outcome == 'success' || steps.ftx-data-download20.outcome == 'success'
         continue-on-error: true
         run: |
-          git add ftx/*.json.gz
-          git add ftx2/*.json.gz
+          git add ftx1/*.json.gz
+          git add ftx5/*.json.gz
+          git add ftx15/*.json.gz
+          git add ftx20/*.json.gz
           git commit -a -m "Update ftx exchange data from ${{ steps.ftx-dates.outputs.start_date }} to ${{ steps.ftx-dates.outputs.end_date }}"
 
       - name: Push changes

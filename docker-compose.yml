@@ -1,16 +1,42 @@
 ---
 version: '3'
 services:
-  download-data:
+  download-data1:
     image: freqtradeorg/freqtrade:develop
-    container_name: download-data
+    container_name: download-data1
     volumes:
       - ".:/freqtrade/user_data/data"
     command: >
       download-data
       --timerange ${START_DATE:-20201201}-${END_DATE:-20211114}
-      --timeframe 5m 15m
-      --datadir user_data/data/ftx
+      --timeframe 1m
+      --datadir user_data/data/ftx1
+      --pairs .*/USD
+      --config user_data/data/pairlists.json
+
+  download-data5:
+    image: freqtradeorg/freqtrade:develop
+    container_name: download-data5
+    volumes:
+      - ".:/freqtrade/user_data/data"
+    command: >
+      download-data
+      --timerange ${START_DATE:-20201201}-${END_DATE:-20211114}
+      --timeframe 5m
+      --datadir user_data/data/ftx5
+      --pairs .*/USD
+      --config user_data/data/pairlists.json
+
+  download-data15:
+    image: freqtradeorg/freqtrade:develop
+    container_name: download-data15
+    volumes:
+      - ".:/freqtrade/user_data/data"
+    command: >
+      download-data
+      --timerange ${START_DATE:-20201201}-${END_DATE:-20211114}
+      --timeframe 15m
+      --datadir user_data/data/ftx15
       --pairs .*/USD
       --config user_data/data/pairlists.json
 
@@ -23,7 +49,7 @@ services:
       download-data
       --timerange ${START_DATE:-20201201}-${END_DATE:-20211114}
       --timeframe 1h 1d
-      --datadir user_data/data/ftx2
+      --datadir user_data/data/ftx20
       --pairs .*/USD
       --config user_data/data/pairlists.json
       

@@ -37,8 +37,8 @@ jobs:
           path:
             backtesting-ftx.env
 
-      - name: Download ftx Data (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
-        id: ftx-data-download
+      - name: Download ftx Data1 (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
+        id: ftx-data-download1
         env:
           START_DATE: ${{ steps.ftx-dates.outputs.start_date }}
           END_DATE: ${{ steps.ftx-dates.outputs.end_date }}
@@ -46,8 +46,26 @@ jobs:
         run: |
           docker-compose run --rm download-data
 
-      - name: Download ftx Data2 (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
-        id: ftx-data-download2
+      - name: Download ftx Data5 (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
+        id: ftx-data-download5
+        env:
+          START_DATE: ${{ steps.ftx-dates.outputs.start_date }}
+          END_DATE: ${{ steps.ftx-dates.outputs.end_date }}
+          EXCHANGE: ftx
+        run: |
+          docker-compose run --rm download-data
+
+      - name: Download ftx Data15 (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
+        id: ftx-data-download15
+        env:
+          START_DATE: ${{ steps.ftx-dates.outputs.start_date }}
+          END_DATE: ${{ steps.ftx-dates.outputs.end_date }}
+          EXCHANGE: ftx
+        run: |
+          docker-compose run --rm download-data
+
+      - name: Download ftx Data20 (${{ steps.ftx-dates.outputs.start_date }} - ${{ steps.ftx-dates.outputs.end_date }})
+        id: ftx-data-download20
         env:
           START_DATE: ${{ steps.ftx-dates.outputs.start_date }}
           END_DATE: ${{ steps.ftx-dates.outputs.end_date }}
@@ -61,7 +79,7 @@ jobs:
 
       - name: Commit ftx Changed Files
         id: commit-ftx-changes
-        if: steps.ftx-data-download.outcome == 'success'
+        if: steps.ftx-data-download1.outcome == 'success' || steps.ftx-data-download5.outcome == 'success' || steps.ftx-data-download15.outcome == 'success' || steps.ftx-data-download20.outcome == 'success'
         continue-on-error: true
         run: |
           git add ftx/*.json.gz
